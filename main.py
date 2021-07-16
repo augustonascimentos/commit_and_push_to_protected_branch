@@ -40,31 +40,44 @@ def api_request(url: str, http_request: str = 'get', check_response: bool = True
 
 def remove_branch_protection():
     url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection'
-    logging.info('Looking for current branch protection rules.')
-    response = api_request(url)
-
+    # logging.info('Looking for current branch protection rules.')
+    # response = api_request(url)
+    #
+    # data = {
+    #     "required_status_checks": response.get("required_status_checks", False),
+    #     "required_pull_request_reviews": response.get("required_pull_request_reviews", False),
+    #     "dismiss_stale_reviews": response.get("dismiss_stale_reviews", False),
+    #     "require_code_owner_reviews": response.get("require_code_owner_reviews", False),
+    #     "required_approving_review_count": response.get("required_approving_review_count", 1),
+    #     "enforce_admins": response.get("enforce_admins", False),
+    #     "restrictions": response.get("restrictions", False),
+    # }
+    #
+    # if 'organization' in api_request(f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}'):
+    #     data["dismissal_restrictions"] = {
+    #         "users": [
+    #             _.get("login")
+    #             for _ in response.get("dismissal_restrictions", {}).get("users", [])
+    #         ],
+    #         "teams": [
+    #             _.get("slug")
+    #             for _ in response.get("dismissal_restrictions", {}).get("teams", [])
+    #         ],
+    #     }
     data = {
-        "required_status_checks": response.get("required_status_checks", False),
-        "required_pull_request_reviews": response.get("required_pull_request_reviews", False),
-        "dismiss_stale_reviews": response.get("dismiss_stale_reviews", False),
-        "require_code_owner_reviews": response.get("require_code_owner_reviews", False),
-        "required_approving_review_count": response.get("required_approving_review_count", 1),
-        "enforce_admins": response.get("enforce_admins", False),
-        "restrictions": response.get("restrictions", False),
+        "required_status_checks": {
+            "strict": False,
+            "contexts": []
+        },
+        "enforce_admins": False,
+        "required_pull_request_reviews": {
+            "dismiss_stale_reviews": True,
+            "require_code_owner_reviews": True,
+            "required_approving_review_count": 2
+        },
+        "restrictions": "null",
+        "required_conversation_resolution": True
     }
-
-    if 'organization' in api_request(f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}'):
-        data["dismissal_restrictions"] = {
-            "users": [
-                _.get("login")
-                for _ in response.get("dismissal_restrictions", {}).get("users", [])
-            ],
-            "teams": [
-                _.get("slug")
-                for _ in response.get("dismissal_restrictions", {}).get("teams", [])
-            ],
-        }
-
     logging.info('Saving protection rules file.')
     with open('tmp_protection_rules.json', 'w') as handle:
         json.dump(data, handle)
