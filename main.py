@@ -100,6 +100,8 @@ def re_add_branch_protection():
 
 def git_add_and_commit():
     logging.info('Pushing to remote Github.')
+    os.system('git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"')
+    os.system('git config --global user.name "github-actions[bot]"')
     os.system('git add -A')
     os.system('git commit -m "Updated by Github Actions :)"')
     os.system('git push')
