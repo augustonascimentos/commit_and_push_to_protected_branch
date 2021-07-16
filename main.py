@@ -80,8 +80,9 @@ def remove_branch_protection():
     }'''
 
     logging.info('Saving protection rules file.')
-    with open('tmp_protection_rules.json', 'w') as handle:
-        json.dump(data, handle)
+    file = open('tmp_protection_rules.json', 'w')
+    file.write(data)
+    file.close()
 
     logging.info('Removing branch protection.')
     api_request(url, http_request='delete', check_response=False)
