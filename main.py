@@ -83,10 +83,11 @@ def git_add_and_commit():
     logging.info('Pushing to remote Github.')
     os.system('git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"')
     os.system('git config --global user.name "github-actions[bot]"')
-    os.system('git pull origin master')
+    os.system('git fetch origin master')
+    os.system('git rebase origin/master')
     os.system('git add -A')
     os.system('git commit -m "Updated by Github Actions :)"')
-    os.system('git push')
+    os.system('git push origin master')
 
 
 def main():
