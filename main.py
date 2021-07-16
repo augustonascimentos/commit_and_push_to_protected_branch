@@ -19,7 +19,7 @@ def api_request(url: str, http_request: str = 'get', check_response: bool = True
             url,
             headers={
                 "Authorization": f"Bearer {os.getenv('GIT_APP_TOKEN')}",
-                "Accept": "application/vnd.github.v3+json",
+                "Accept": "application/vnd.github.luke-cage-preview+json",
             },
             timeout=REQUEST_TIMEOUT,
             **kwargs
@@ -77,7 +77,6 @@ def re_add_branch_protection():
     url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection'
 
     logging.info('Re-adding protection branch rules.')
-    print(data)
     response = api_request(url, http_request='put', json=data, check_response=False)
     print(response.json())
 
