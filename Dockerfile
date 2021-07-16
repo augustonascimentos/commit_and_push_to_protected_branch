@@ -10,4 +10,4 @@ RUN apk update \
 WORKDIR /app
 ENV PYTHONPATH /app
 # CMD ["/app/main.py"]
-ENTRYPOINT ["bash", "/app/main.py"]
+ENTRYPOINT ["python3", "/app/main.py"]
