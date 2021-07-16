@@ -10,7 +10,7 @@ REQUEST_TIMEOUT = 10  # in seconds
 API_V3_BASE = "https://api.github.com"
 
 
-def api_request(url: str, http_request: str = 'get', **kwargs):
+def api_request(url: str, http_request: str = 'get', check_response: bool = True, **kwargs):
     url = urljoin(API_V3_BASE, url)
 
     try:
@@ -24,7 +24,15 @@ def api_request(url: str, http_request: str = 'get', **kwargs):
             timeout=REQUEST_TIMEOUT,
             **kwargs
         )
-        return response.json()
+
+        if check_response:
+            try:
+                response = response.json()
+
+            except json.JSONDecodeError as exc:
+                raise RuntimeError(f'Failed to jsonify response.\n{exc!r}')
+
+        return response
 
     except Exception as err:
         raise err
@@ -59,7 +67,7 @@ def remove_branch_protection():
         json.dump(data, handle)
 
     logging.info('Removing branch protection.')
-    api_request(url, http_request='delete')
+    api_request(url, http_request='delete', check_response=False)
 
 
 def re_add_branch_protection():
@@ -70,7 +78,7 @@ def re_add_branch_protection():
     url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection'
 
     logging.info('Re-adding protection branch rules.')
-    api_request(url, http_request='put', json=data)
+    api_request(url, http_request='put', json=data, check_response=False)
 
 
 def git_add_and_commit():
@@ -82,7 +90,6 @@ def git_add_and_commit():
 
 def main():
     logging.info('Initializing...')
-    print(os.getenv("GITHUB_REPOSITORY", ""))
     remove_branch_protection()
     git_add_and_commit()
     re_add_branch_protection()
