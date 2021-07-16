@@ -44,9 +44,13 @@ def remove_branch_protection():
     response = api_request(url)
 
     data = {
+        "required_status_checks": response.get("required_status_checks", False),
+        "required_pull_request_reviews": response.get("required_pull_request_reviews", False),
         "dismiss_stale_reviews": response.get("dismiss_stale_reviews", False),
         "require_code_owner_reviews": response.get("require_code_owner_reviews", False),
-        "required_approving_review_count": response.get("required_approving_review_count", 1)
+        "required_approving_review_count": response.get("required_approving_review_count", 1),
+        "enforce_admins": response.get("enforce_admins", False),
+        "restrictions": response.get("restrictions", False),
     }
 
     if 'organization' in api_request(f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}'):
@@ -75,7 +79,7 @@ def re_add_branch_protection():
         data = json.load(handle)
 
     url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection'
-
+    print(data)
     logging.info('Re-adding protection branch rules.')
     response = api_request(url, http_request='put', json=data, check_response=False)
     print(response.json())
