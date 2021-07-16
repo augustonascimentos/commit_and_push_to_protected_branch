@@ -1,0 +1,6 @@
+name: Push and commit to protected branch
+description: Remove branch protection temporarily, commit and return with protection.
+author: Augusto Nascimento
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
