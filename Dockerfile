@@ -6,7 +6,7 @@ RUN pip install --target=/app requests
 
 FROM gcr.io/distroless/python3-debian10
 
-RUN apt-get update && apt-get install -y git
+RUN apt update && apt install -y git
 
 COPY --from=builder /app /app
 WORKDIR /app
