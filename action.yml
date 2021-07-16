@@ -4,3 +4,6 @@ author: Augusto Nascimento
 runs:
   using: 'docker'
   image: 'Dockerfile'
+branding:
+  icon: 'arrow-down-circle'
+  color: 'gray-dark'
