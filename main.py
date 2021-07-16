@@ -64,20 +64,21 @@ def remove_branch_protection():
     #             for _ in response.get("dismissal_restrictions", {}).get("teams", [])
     #         ],
     #     }
-    data = {
+    data = '''{
         "required_status_checks": {
-            "strict": False,
+            "strict": false,
             "contexts": []
         },
-        "enforce_admins": False,
+        "enforce_admins": false,
         "required_pull_request_reviews": {
-            "dismiss_stale_reviews": True,
-            "require_code_owner_reviews": True,
+            "dismiss_stale_reviews": true,
+            "require_code_owner_reviews": true,
             "required_approving_review_count": 2
         },
-        "restrictions": "null",
-        "required_conversation_resolution": True
-    }
+        "restrictions": null,
+        "required_conversation_resolution": true
+    }'''
+
     logging.info('Saving protection rules file.')
     with open('tmp_protection_rules.json', 'w') as handle:
         json.dump(data, handle)
