@@ -1,11 +1,11 @@
-FROM python:alpine
+FROM python:3-slim AS builder
+ADD . /app
+WORKDIR /app
 
-ADD requirements*.txt ./
-ADD src ./src
+RUN pip install --target=/app requests
 
-RUN apk update \
-    && apk add --no-cache git bash \
-    && pip install -r requirements.txt
-
-CMD ["./src/main.py"]
-ENTRYPOINT [ "python3" ]
+FROM gcr.io/distroless/python3-debian10
+COPY --from=builder /app /app
+WORKDIR /app
+ENV PYTHONPATH /app
+CMD ["/app/main.py"]

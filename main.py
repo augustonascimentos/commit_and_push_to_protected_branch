@@ -86,4 +86,5 @@ def main():
     re_add_branch_protection()
 
 
-main()
+if __name__ == "__main__":
+    main()
