@@ -94,10 +94,8 @@ def re_add_branch_protection():
         data = json.load(handle)
 
     url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection'
-    print(data)
     logging.info('Re-adding protection branch rules.')
     response = api_request(url, http_request='put', json=data, check_response=False)
-    print(response.json())
 
 
 def git_add_and_commit():
