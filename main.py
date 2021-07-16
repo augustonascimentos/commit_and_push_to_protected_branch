@@ -76,7 +76,7 @@ def re_add_branch_protection():
 
     url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection/required_pull_request_reviews'
     logging.info('Re-adding protection branch rules.')
-    api_request(url, http_request='put', json=data, check_response=False)
+    api_request(url, http_request='patch', json=data, check_response=False)
 
 
 def git_add_and_commit():
