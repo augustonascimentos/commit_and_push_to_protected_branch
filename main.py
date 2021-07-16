@@ -74,7 +74,7 @@ def re_add_branch_protection():
     with open('tmp_protection_rules.json', 'r') as handle:
         data = json.load(handle)
 
-    url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection'
+    url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection/required_pull_request_reviews'
     logging.info('Re-adding protection branch rules.')
     api_request(url, http_request='put', json=data, check_response=False)
 
@@ -83,6 +83,7 @@ def git_add_and_commit():
     logging.info('Pushing to remote Github.')
     os.system('git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"')
     os.system('git config --global user.name "github-actions[bot]"')
+    os.system('git pull')
     os.system('git add -A')
     os.system('git commit -m "Updated by Github Actions :)"')
     os.system('git push')
