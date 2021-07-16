@@ -2,9 +2,12 @@ FROM python:3-slim AS builder
 ADD . /app
 WORKDIR /app
 
-RUN pip install --target=/app requests && apt-get install -y git
+RUN pip install --target=/app requests
 
 FROM gcr.io/distroless/python3-debian10
+
+RUN apt-get update && apt-get install -y git
+
 COPY --from=builder /app /app
 WORKDIR /app
 ENV PYTHONPATH /app
