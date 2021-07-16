@@ -62,7 +62,7 @@ def remove_branch_protection():
         }
 
     logging.info('Saving protection rules file.')
-    with open("tmp_protection_rules.json", "w") as handle:
+    with open('tmp_protection_rules.json', 'w') as handle:
         json.dump(data, handle)
 
     logging.info('Removing branch protection.')
@@ -86,7 +86,7 @@ def git_add_and_commit():
     os.system('git fetch origin master')
     os.system('git checkout master')
     os.system('git merge origin/master')
-    os.system('git add -A')
+    os.system('git add --all -- ":!tmp_protection_rules.json"')
     os.system('git commit -m "Updated by Github Actions :)"')
     os.system('git push origin master')
 
