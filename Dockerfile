@@ -3,11 +3,13 @@ FROM ubuntu:latest
 ADD . /app
 WORKDIR /app
 
-RUN pip install --target=/app requests
 
 # FROM gcr.io/distroless/python3-debian10
 
 RUN apt update && apt install -y git
+RUN apt install -y software-properties-common && add-apt-repository ppa:deadsnakes/ppa
+RUN apt update && apt install python3.8
+RUN pip install --target=/app requests
 
 # COPY --from=builder /app /app
 WORKDIR /app
