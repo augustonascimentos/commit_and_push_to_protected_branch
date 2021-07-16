@@ -34,6 +34,7 @@ def remove_branch_protection():
     url = f'/repos/{os.getenv("GITHUB_REPOSITORY", "")}/branches/master/protection'
     logging.info('Looking for current branch protection rules.')
     response = api_request(url)
+    print(response)
 
     data = {
         "dismiss_stale_reviews": response.get("dismiss_stale_reviews", False),
@@ -81,6 +82,7 @@ def git_add_and_commit():
 
 def main():
     logging.info('Initializing...')
+    print(os.getenv("GITHUB_REPOSITORY", ""))
     remove_branch_protection()
     git_add_and_commit()
     re_add_branch_protection()
