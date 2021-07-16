@@ -24,7 +24,7 @@ def api_request(url: str, http_request: str = 'get', **kwargs):
             timeout=REQUEST_TIMEOUT,
             **kwargs
         )
-        return response
+        return response.json()
 
     except Exception as err:
         raise err
